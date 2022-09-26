@@ -1,6 +1,8 @@
 ﻿using Budget.Application.Interfaces;
 using Budget.Application.Services;
+using Budget.Domain.Interfaces;
 using Budget.Infrastructure.Data;
+using Budget.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,9 @@ namespace BudgetApp
             options.UseSqlServer(Configuration.GetConnectionString("Connection")));
 
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<IUnitOfWork,UnitOfWork>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient(typeof(IGenericService<>), typeof(GenericService<>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

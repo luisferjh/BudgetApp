@@ -19,7 +19,7 @@ namespace BudgetApp.Controllers
             _login = login;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginModel) 
         {
             AuthenticationResultDTO result = null;

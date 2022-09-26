@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Base\" />
+    <ProjectReference Include="..\Budget.Domain\Budget.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Budget.Domain\Budget.Domain.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>
