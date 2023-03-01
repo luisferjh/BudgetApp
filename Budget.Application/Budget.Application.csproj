@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Budget.Application.Common\Budget.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\Budget.Domain.DTOS\Budget.Infrastructure.DTOS.csproj" />
     <ProjectReference Include="..\Budget.Domain\Budget.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapping\" />
   </ItemGroup>
 
 </Project>

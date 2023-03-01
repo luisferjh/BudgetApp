@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Budget.Domain.DTOs
+namespace Budget.Domain.DTOS.Models
 {
     public class ResponseServiceDTO
     {

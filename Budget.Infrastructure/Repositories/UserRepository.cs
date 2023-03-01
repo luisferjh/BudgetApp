@@ -1,6 +1,7 @@
 ﻿using Budget.Domain.Entities;
 using Budget.Domain.Interfaces;
 using Budget.Infrastructure.Data;
+using Budget.Infrastructure.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,43 +11,23 @@ using System.Threading.Tasks;
 
 namespace Budget.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
-    {
-        private readonly BudgetDbContext _dbContext;
+    public class UserRepository : GenericRepository<User>, IUserRepository
+    {        
         public UserRepository(BudgetDbContext dbContext)
+            : base(dbContext) { }
+
+      
+
+        public async Task<User> Get(string email)
         {
-            _dbContext = dbContext;
+            return await _dbContext.Users.FirstOrDefaultAsync(f => f.Email == email);
+        }
+
+        public void Deactivate(User user)
+        {
+            user.State = 0;           
         }
        
-        public async Task<User> Get(int id)
-        {
-            return await _dbContext.Users.FirstOrDefaultAsync(f => f.Id == id);
-        }
-
-        public async Task<User> Get(string username)
-        {
-            return await _dbContext.Users.FirstOrDefaultAsync(f => f.Email == username);
-        }
-
-        public async Task<IEnumerable<User>> GetAll()
-        {
-            return await _dbContext.Users.ToListAsync();
-        }
-
-        public Task Insert(User model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(User model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
     }
+
 }

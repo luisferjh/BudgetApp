@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Budget.Domain.Interfaces
 {
-    public interface IUserRepository:IGenericRepository<User>
+    public interface ILogRepository
     {
-        Task<User> Get(string email);
-        void Deactivate(User user);
+        void SaveLog(LogError logError);
     }
 }

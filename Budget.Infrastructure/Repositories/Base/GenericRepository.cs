@@ -10,38 +10,55 @@ using System.Threading.Tasks;
 namespace Budget.Infrastructure.Repositories.Base
 {
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly BudgetDbContext _dbContext;  
+        protected readonly BudgetDbContext _dbContext;  
         public GenericRepository(BudgetDbContext dbContext)          
         {
             _dbContext = dbContext;
         }
        
-        public async Task<T> Get(int id)
+        public async Task<T> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<T>().FindAsync(id);   
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public T Get(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public Task Insert(T model)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public Task Update(T model)
+        public IEnumerable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.Set<T>().ToList();
         }
 
-        public Task<bool> Delete(int id)
+        public async Task AddAsync(T model)
         {
-            throw new NotImplementedException();
+            await _dbContext.Set<T>().AddAsync(model);
         }
 
+        public void Add(T model)
+        {
+            _dbContext.Set<T>().Add(model);
+        }
+
+        public void Update(T model)
+        {
+            _dbContext.Set<T>().Update(model);
+        }
+
+        public void Delete(T model)
+        {
+            _dbContext.Set<T>().Remove(model);
+        }
+
+          
+       
     }
 }

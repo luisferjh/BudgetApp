@@ -1,4 +1,4 @@
-﻿using Budget.Domain.DTOs;
+﻿using Budget.Domain.DTOS.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Budget.Application.Interfaces
 {
-    public interface IGenericService<T> where T: class 
+    public interface IGenericService<T> 
+        where T: class        
     {                
         Task<T> GetAsync(int id);     
-        Task<ResponseServiceDTO> InsertAsync(T model);        
-        Task<ResponseServiceDTO> UpdateAsync(T model);       
-        Task<ResponseServiceDTO> DeleteAsync(int id);
+        T GetById(int id);
+        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();          
         
     }
 }

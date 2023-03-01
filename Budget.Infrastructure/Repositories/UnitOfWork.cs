@@ -12,17 +12,41 @@ namespace Budget.Infrastructure.Repositories
     {
         private readonly BudgetDbContext _dbContexnt;
         private readonly IUserRepository _userRepository;
-        public UnitOfWork(BudgetDbContext budgetDbContext, IUserRepository userRepository)
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+
+        public UnitOfWork(BudgetDbContext budgetDbContext,
+            IUserRepository userRepository,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _dbContexnt = budgetDbContext;  
-            _userRepository = userRepository;            
+            _userRepository = userRepository;     
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public IUserRepository UserRepository { get => _userRepository; }
 
-        public async Task SaveAsync()
+        public IRefreshTokenRepository RefreshTokenRepository { get => _refreshTokenRepository; }
+
+        public async Task<int> SaveAsync()
         {
-            await _dbContexnt.SaveChangesAsync();
+            return await _dbContexnt.SaveChangesAsync();
+        }
+
+        public int Save() 
+        {
+            return _dbContexnt.SaveChanges();
+        }
+
+        public void Dispose() 
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) 
+        {
+            if (disposing)
+                _dbContexnt.Dispose();
         }
     }
 }

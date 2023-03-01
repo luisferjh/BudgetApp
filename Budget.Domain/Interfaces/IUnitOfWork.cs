@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 namespace Budget.Domain.Interfaces
 {
     public interface IUnitOfWork
-    {     
-        IUserRepository UserRepository { get; }        
+    {
+        IUserRepository UserRepository { get; }
+        IRefreshTokenRepository RefreshTokenRepository { get; }
+        //IGenericRepository<T> GerenicRepo<T>() where T: class ; 
 
-        Task SaveAsync();
+        Task<int> SaveAsync();
+        int Save();
     }
 }

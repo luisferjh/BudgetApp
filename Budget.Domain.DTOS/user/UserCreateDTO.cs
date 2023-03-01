@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Budget.Domain.Entities
+namespace Budget.Domain.DTOS.user
 {
-    public class User
+    public class UserCreateDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }   
+        public string Name { get; set; }
+        public string LastName { get; set; }
         public string DNIType { get; set; }
         public string DNI { get; set; }
         public string Email { get; set; }

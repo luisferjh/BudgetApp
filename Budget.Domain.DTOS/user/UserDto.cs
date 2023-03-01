@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Budget.Domain.DTOS.user
+{
+    public class UserDto
+    {      
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public string DNIType { get; set; }
+        public string DNI { get; set; }
+        public string Email { get; set; }       
+        public int State { get; set; }
+       
+    }
+}
