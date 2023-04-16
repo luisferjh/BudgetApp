@@ -10,8 +10,9 @@ namespace Budget.Domain.Interfaces
     public interface IUnitOfWork
     {
         IUserRepository UserRepository { get; }
+        ILogRepository LogRepository { get; }
         IRefreshTokenRepository RefreshTokenRepository { get; }
-        //IGenericRepository<T> GerenicRepo<T>() where T: class ; 
+        ILoadFilesRepository LoadFilesRepository { get; }
 
         Task<int> SaveAsync();
         int Save();

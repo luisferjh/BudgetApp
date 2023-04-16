@@ -11,5 +11,6 @@ namespace Budget.Domain.Interfaces
     {
         Task<User> Get(string email);
         void Deactivate(User user);
+        Task<List<UserClaims>> GetUserClaims(int idUser);
     }
 }

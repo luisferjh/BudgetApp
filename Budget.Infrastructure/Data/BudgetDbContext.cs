@@ -1,90 +1,67 @@
 ﻿using Budget.Domain.Entities;
+using Budget.Infrastructure.Data.ConfigurationEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Budget.Infrastructure.Data
 {
     public class BudgetDbContext : DbContext
-    {
+    {          
         public DbSet<User> Users { get; set; }
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<FinancialProduct> FinancialProducts { get; set; }      
+        public DbSet<AccountingEntry> AccountingEntries { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<Movement> Movements { get; set; }
         public DbSet<State> States { get; set; }
-        public DbSet<LogError> LogErrors { private get; set; }
+        public DbSet<LogError> LogErrors { get; set; }         
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<UserClaims> UserClaims { get; set; }
+        public DbSet<IncomeCategory> IncomeCategories { get; set; }
+        public DbSet<SpentCategory> SpentCategories { get; set; }
+        public DbSet<SpentDetail> SpentDetail { get; set; }
+        public DbSet<Spent> Spents { get; set; }
+        public DbSet<Income> Incomes { get; set; }
+        public DbSet<Periodicity> Periodicities { get; set; }
+        public DbSet<CashFlowFixed> CashFlowFixeds { get; set; }
+        public DbSet<TransactionFixed> TransactionFixeds { get; set; }
+        public DbSet<PaymentDatePeriod> PaymentDatePeriods { get; set; }      
 
 
         public BudgetDbContext(DbContextOptions<BudgetDbContext> options)
             :base(options)
         {
-
         
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
-            modelBuilder.Entity<User>(entity => {
-                entity.HasKey(e => e.Id);
-                 
-                entity.Property(e => e.Id)
-                .HasColumnName("id");
-
-                entity.Property(s => s.Name)
-                .HasColumnName("name")
-                .HasColumnName("nvarchar(50)");               
-
-                entity.Property(s => s.DNIType)
-                .HasColumnType("nvarchar(20)")
-                 .HasColumnName("dni_type")
-                .IsRequired();
-
-                entity.Property(s => s.DNI)
-                .HasColumnType("nvarchar(20)")
-                .HasColumnName("dni")
-                .IsRequired();
-
-                entity.Property(s => s.Email)
-                .HasColumnType("nvarchar(50)")
-                 .HasColumnName("email")
-                 .IsRequired();
-
-                entity.Property(s => s.Password)
-                .HasColumnType("nvarchar(max)")
-                .HasColumnName("password")
-                .IsRequired();
-
-                entity.Property(s => s.State)
-                .HasColumnType("int")
-                .HasColumnName("state")
-                .IsRequired();
-
-                entity.Property(s => s.CreatedDate)
-                .HasColumnType("date")
-                .HasColumnName("created_date")
-                .IsRequired();
-
-            });
-
-            modelBuilder.Entity<State>(entity => {
-                entity.HasKey(e => e.IdState);
-
-                entity.Property(s => s.Code)
-                    .HasColumnType("nvarchar(10)")
-                    .IsRequired();
-
-                entity.Property(s => s.Description)
-                    .HasColumnType("nvarchar(50)")
-                    .IsRequired();
-            });
-
-            modelBuilder.Entity<LogError>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-            });
-
-           
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new StateConfiguration());                                  
+            modelBuilder.ApplyConfiguration(new LogConfiguration());                                                          
+            modelBuilder.ApplyConfiguration(new BankConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new AccountingEntriesConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new FinancialProductConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new WalletConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new OperationConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new MovementConfiguration());                                              
+            modelBuilder.ApplyConfiguration(new UserClaimsConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new IncomeCategoriesConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new SpentCategoriesConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new SpentConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new SpentDetailConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new IncomeConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new PeriodicityConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new CashFlowFixedConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new PaymentDatePeriodConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new TransactionFixedConfiguration());                                                         
+                                                                
         }
 
 

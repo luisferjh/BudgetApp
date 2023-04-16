@@ -27,7 +27,11 @@ namespace Budget.Infrastructure.Repositories
         {
             user.State = 0;           
         }
-       
+
+        public async Task<List<UserClaims>> GetUserClaims(int idUser)
+        {
+            return await _dbContext.UserClaims.Where(f => f.IdUser == idUser).ToListAsync();
+        }
     }
 
 }

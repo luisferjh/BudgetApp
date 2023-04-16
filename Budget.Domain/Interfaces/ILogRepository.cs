@@ -9,6 +9,10 @@ namespace Budget.Domain.Interfaces
 {
     public interface ILogRepository
     {
+        Task SaveLogAsync(LogError logError);
         void SaveLog(LogError logError);
+
+        Task SaveFileLogAsync(string data, Exception ex, string controller = "", string service = "" );
+        void SaveFileLog(string data, Exception ex, string controller = "", string service = "");
     }
 }

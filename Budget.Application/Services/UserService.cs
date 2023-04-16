@@ -42,6 +42,13 @@ namespace Budget.Application.Services
             return userDto;
         }
 
+        public async Task<UserDto> GetAsync(string email)
+        {
+            var user = await _unitOfWork.UserRepository.Get(email);
+            var userDto = _mapping.Map<UserDto, User>(user);
+            return userDto;
+        }
+
         public async Task<ResponseServiceDTO> InsertAsync(UserCreateDTO model)
         {
             try
@@ -56,26 +63,21 @@ namespace Budget.Application.Services
                 await _unitOfWork.UserRepository.AddAsync(user);
                 int result = await _unitOfWork.SaveAsync();
 
-                if (result > 0)
-                {
+                if (result > 0)                
                     return new ResponseServiceDTO
                     {
                         Message = "User registered successfully",
                         Result = true,
                         Response = user,
-                    };
-                }
-                else 
-                {
+                    };                
+                else                 
                     return new ResponseServiceDTO
                     {
                         Message = "Error occurred",
                         Result = false,
                         Response = model,
                     };
-                }
-
-               
+                               
             }
             catch (Exception ex)
             {
@@ -89,7 +91,6 @@ namespace Budget.Application.Services
 
         }        
         
-
         public async Task<ResponseServiceDTO> DeleteAsync(string email)
         {
             try
@@ -135,5 +136,7 @@ namespace Budget.Application.Services
                 throw;
             }
         }
+
+      
     }
 }

@@ -6,11 +6,12 @@ using Budget.Infrastructure.Common;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BudgetApp.Controllers
 {
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -40,19 +41,15 @@ namespace BudgetApp.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                //var userDto = mapper.Map<UserCreateDTO, UserDto>(userCreationDto);
+                if (!ModelState.IsValid)                
+                    return BadRequest(ModelState);                
+               
                 ResponseServiceDTO resultService = await _userService.InsertAsync(userCreationDto);
 
-                if (resultService.Result)
-                    return Ok(resultService);
-                else
-                    return BadRequest(resultService);
-                                
+                if (!resultService.Result)
+                    return BadRequest(resultService);                                 
+
+                return Ok(resultService);
             }
             catch (Exception ex)
             {
@@ -68,11 +65,31 @@ namespace BudgetApp.Controllers
         [HttpDelete("{email}")]
         public async Task<ActionResult> Deactivate(string email)
         {
-            ResponseServiceDTO resultService = await _userService.DeleteAsync(email);
-            if (resultService.Result)
+            ResponseServiceDTO resultService;
+            try
+            {
+                var user = await _userService.GetAsync(email);
+
+                if (user == null) return NotFound();
+
+                string emailClaim = User.FindFirst("email").Value;
+
+                if (!string.IsNullOrEmpty(emailClaim) &&
+                    user.Email != emailClaim)
+                    return BadRequest();
+
+                resultService = await _userService.DeleteAsync(email);
+
+                if (!resultService.Result)
+                    return BadRequest();
+
                 return Ok();
-            else
+            }
+            catch (Exception ex)
+            {
                 return BadRequest();
+            }
+           
         }
     }
 }

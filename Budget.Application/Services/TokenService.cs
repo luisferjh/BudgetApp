@@ -32,7 +32,7 @@ namespace Budget.Application.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public JwtSettingsDTO GenerateToken(User user)
+        public async Task<JwtSettingsDTO> GenerateToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("JwtSettings:SecretKey")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -44,6 +44,11 @@ namespace Budget.Application.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            var userClaimsDB = await GetClaimsFromDB(user.Id);
+            claims.AddRange(userClaimsDB
+                .Select(s => new Claim(s.ClaimType, s.ClaimValue))
+                .ToList());
 
             JwtSecurityToken token = new JwtSecurityToken(
             //_config.GetConnectionString("JwtSettings:Issuer"),
@@ -70,6 +75,12 @@ namespace Budget.Application.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 ExpireTime = token.ValidTo
             };
+        }
+
+        public async Task<List<UserClaims>> GetClaimsFromDB(int idUser)
+        {
+            List<UserClaims> userClaims = await _unitOfWork.UserRepository.GetUserClaims(idUser);
+            return userClaims;
         }
     }
 }

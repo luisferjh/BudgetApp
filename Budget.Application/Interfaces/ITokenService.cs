@@ -10,6 +10,7 @@ namespace Budget.Application.Interfaces
 {
     public interface ITokenService
     {
-        JwtSettingsDTO GenerateToken(User user);
+        Task<JwtSettingsDTO> GenerateToken(User user);
+        Task<List<UserClaims>> GetClaimsFromDB(int idUser);
     }
 }

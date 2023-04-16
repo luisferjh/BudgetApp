@@ -17,5 +17,10 @@ namespace Budget.Domain.Entities
         public string Password { get; set; }
         public int State { get; set; }
         public DateTime CreatedDate { get; set; }
+        public List<UserClaims> UserClaims { get; set; }
+        public List<Wallet> Wallets { get; set; }
+        public List<Income> Incomes { get; set; }
+        public List<Spent> Spents { get; set; }
+        public List<CashFlowFixed> CashFlowFixeds { get; set; }
     }
 }

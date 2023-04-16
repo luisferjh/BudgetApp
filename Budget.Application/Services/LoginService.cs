@@ -41,7 +41,7 @@ namespace Budget.Application.Services
             if (user == null)
                 return result;
 
-            JwtSettingsDTO token = _tokenService.GenerateToken(user);
+            JwtSettingsDTO token = await _tokenService.GenerateToken(user);
 
             result.Result = token;
             result.Success = true;
@@ -144,7 +144,7 @@ namespace Budget.Application.Services
 
             var user = await _unitOfWork.UserRepository.GetAsync(storeRefrestToken.UserId);
 
-            JwtSettingsDTO newRefreshtoken = _tokenService.GenerateToken(user);
+            JwtSettingsDTO newRefreshtoken = await _tokenService.GenerateToken(user);
 
             return new AuthenticationResultDTO { Result = newRefreshtoken, Success = true };
         }

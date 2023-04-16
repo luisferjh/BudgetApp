@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using Budget.Infrastructure.Common.Configs;
+using Budget.Infrastructure.Adapters.Loads;
 
 namespace BudgetApp
 {
@@ -79,17 +80,27 @@ namespace BudgetApp
 
             //services.AddAutoMapper(typeof(Startup));
 
+            services.AddTransient<IUserRepository, UserRepository>();          
+            services.AddTransient<ILogRepository, LogRepository>();          
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ILogService, LogService>();
             services.AddTransient<IUnitOfWork,UnitOfWork>();
-            services.AddTransient<IUserRepository, UserRepository>();          
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();          
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<SecurityTools>();
             services.AddTransient<IMapping, AutoMapperImplementation>();
+            services.AddTransient<ILoadsService, LoadsService>();
+            services.AddTransient<ILoadFilesRepository, LoadFileRepository>();
 
             // initialize static service provider
             StaticServiceProvider.BuildProvider(services);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin", policy => policy.RequireClaim("isAdmin"));
+                options.AddPolicy("IsUser", policy => policy.RequireClaim("isUser"));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -105,7 +116,7 @@ namespace BudgetApp
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization();        
 
             app.UseEndpoints(endpoints =>
             {

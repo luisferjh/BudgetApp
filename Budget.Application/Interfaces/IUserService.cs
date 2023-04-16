@@ -9,6 +9,7 @@ namespace Budget.Application.Interfaces
     public interface IUserService
     {
         Task<UserDto> GetAsync(int id);
+        Task<UserDto> GetAsync(string email);
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<ResponseServiceDTO> InsertAsync(UserCreateDTO model);             
         Task<ResponseServiceDTO> DeleteAsync(string email);

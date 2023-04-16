@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Budget.Application.Interfaces;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Budget.Domain.DTOS.Models;
 using Budget.Infrastructure.DTOS.user.Requests;
+using Budget.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetApp.Controllers
 {
@@ -15,32 +14,47 @@ namespace BudgetApp.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _login;
-        public LoginController(ILoginService login)
+        private readonly ILogService _logService;
+
+        public LoginController(ILoginService login,
+            ILogService logService)
         {
             _login = login;
+            _logService = logService;
         }
 
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginModel) 
         {
+         
             AuthenticationResultDTO result = null;
             try
             {
                 if (!ModelState.IsValid)
-                    return Unauthorized(); 
-               
+                    return Unauthorized();
+
                 result = await _login.LoginAsync(loginModel);
 
-                if (!result.Success)                
+                if (!result.Success)
                     return BadRequest(result);
-                
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                throw;
+                await _logService.SaveLog(new LogError {
+                    Data = loginModel.ToString(),
+                    DateLog = DateTime.Now,
+                    Method = "LoginController",
+                    Trace = ex.Message,
+                    Layer = Layers.Presentation
+                });
+
+                return BadRequest(result);
+                //return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(result);
+           
         }
 
         [HttpPost("[action]")]
@@ -57,13 +71,13 @@ namespace BudgetApp.Controllers
                 if (!result.Success)
                     return BadRequest(result);
 
+                return Ok(result);
             }
-            catch (Exception ex)
+            catch 
             {
-                throw;
+                return BadRequest(result);
             }
-
-            return Ok(result);
+           
         }
 
     }
