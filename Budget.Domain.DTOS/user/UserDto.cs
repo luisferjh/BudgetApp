@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Budget.Domain.DTOS.user
 {
     public class UserDto
-    {      
+    {
+        public string Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string DNIType { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Budget.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
+using System;
 
 namespace Budget.Infrastructure.Data.ConfigurationEntities
 {
@@ -27,8 +27,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
 
             builder.Property(x => x.IdPreviousTransaction)
               .HasColumnName("id_previous_transaction")
-              .HasColumnType("int")
-              .IsRequired();
+              .HasColumnType("int");              
 
             builder.Property(x => x.TransactionNumber)
                 .HasColumnName("transaction_number")
@@ -53,7 +52,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
             builder.Property(x => x.CreatedDate)
                .HasColumnName("created_date")
                .HasColumnType("datetime")
-               .IsRequired();
+               .IsRequired()
+               .HasDefaultValue(DateTime.Now);
 
             builder.HasOne(x => x.Operation)
                 .WithMany(x => x.Movements)

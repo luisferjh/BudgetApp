@@ -186,7 +186,9 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnName("amount");
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
+                        .HasDefaultValue(new DateTime(2023, 5, 16, 23, 46, 19, 520, DateTimeKind.Local).AddTicks(6948))
                         .HasColumnName("created_date");
 
                     b.Property<string>("Description")
@@ -219,7 +221,7 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("transaction_number");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_date");
 
@@ -282,26 +284,45 @@ namespace Budget.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("data");
 
                     b.Property<DateTime>("DateLog")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValue(new DateTime(2023, 5, 16, 23, 46, 19, 510, DateTimeKind.Local).AddTicks(9291))
+                        .HasColumnName("data_log");
+
+                    b.Property<string>("Exception")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("exception");
+
+                    b.Property<string>("InnerException")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("inner_exception");
 
                     b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("key");
 
-                    b.Property<int>("Layer")
-                        .HasColumnType("int");
+                    b.Property<string>("Layer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("layer");
+
+                    b.Property<string>("MessageError")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnName("message_error");
 
                     b.Property<string>("Method")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("method");
 
-                    b.Property<string>("Trace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("StackTrace")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("stack_trace");
 
                     b.HasKey("Id");
 
@@ -327,7 +348,9 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnName("amount");
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
+                        .HasDefaultValue(new DateTime(2023, 5, 16, 23, 46, 19, 514, DateTimeKind.Local).AddTicks(1825))
                         .HasColumnName("created_date");
 
                     b.Property<string>("DNI")
@@ -343,7 +366,7 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id_operation");
 
-                    b.Property<int>("IdPreviousTransaction")
+                    b.Property<int?>("IdPreviousTransaction")
                         .HasColumnType("int")
                         .HasColumnName("id_previous_transaction");
 
@@ -359,7 +382,8 @@ namespace Budget.Infrastructure.Migrations
                     b.HasIndex("IdOperation");
 
                     b.HasIndex("IdPreviousTransaction")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[id_previous_transaction] IS NOT NULL");
 
                     b.ToTable("Movements");
                 });
@@ -502,6 +526,39 @@ namespace Budget.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Budget.Domain.Entities.Setting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("creation_date");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Serie")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)")
+                        .HasColumnName("serie");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("Budget.Domain.Entities.Spent", b =>
@@ -799,7 +856,9 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnName("balance");
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
+                        .HasDefaultValue(new DateTime(2023, 5, 16, 23, 46, 19, 512, DateTimeKind.Local).AddTicks(7321))
                         .HasColumnName("created_date");
 
                     b.Property<string>("DNI")
@@ -819,7 +878,7 @@ namespace Budget.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id_user");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_date");
 
@@ -990,8 +1049,7 @@ namespace Budget.Infrastructure.Migrations
                     b.HasOne("Budget.Domain.Entities.Movement", "MovementPrevious")
                         .WithOne()
                         .HasForeignKey("Budget.Domain.Entities.Movement", "IdPreviousTransaction")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("AccountingEntry");
 

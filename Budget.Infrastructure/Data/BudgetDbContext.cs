@@ -31,7 +31,8 @@ namespace Budget.Infrastructure.Data
         public DbSet<Periodicity> Periodicities { get; set; }
         public DbSet<CashFlowFixed> CashFlowFixeds { get; set; }
         public DbSet<TransactionFixed> TransactionFixeds { get; set; }
-        public DbSet<PaymentDatePeriod> PaymentDatePeriods { get; set; }      
+        public DbSet<PaymentDatePeriod> PaymentDatePeriods { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
 
         public BudgetDbContext(DbContextOptions<BudgetDbContext> options)
@@ -61,6 +62,7 @@ namespace Budget.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new CashFlowFixedConfiguration());                                                         
             modelBuilder.ApplyConfiguration(new PaymentDatePeriodConfiguration());                                                         
             modelBuilder.ApplyConfiguration(new TransactionFixedConfiguration());                                                         
+            modelBuilder.ApplyConfiguration(new SettingConfiguration());                                                         
                                                                 
         }
 

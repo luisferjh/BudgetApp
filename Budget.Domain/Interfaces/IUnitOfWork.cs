@@ -13,6 +13,16 @@ namespace Budget.Domain.Interfaces
         ILogRepository LogRepository { get; }
         IRefreshTokenRepository RefreshTokenRepository { get; }
         ILoadFilesRepository LoadFilesRepository { get; }
+        IIncomeRepository IncomeRepository { get; }
+        IWalletRepository WalletRepository { get; }   
+        IFinancialProductRepository FinancialProductRepository { get; }
+        IIncomeCategoryRepository IncomeCategoryRepository { get; }
+        IOperationRepository OperationRepository { get; }
+        IAccountEntryRepository AccountEntryRepository { get; }
+        IMovementRepository MovementRepository { get; }
+        ISettingRepository SettingRepository { get; }
+        //IGenericRepository<T> GenericRepository<T>() where T : class;
+
 
         Task<int> SaveAsync();
         int Save();

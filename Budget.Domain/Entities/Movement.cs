@@ -7,7 +7,7 @@ namespace Budget.Domain.Entities
         public int Id { get; set; }
         public int IdAccountingEntry { get; set; }
         public int IdOperation { get; set; }
-        public int IdPreviousTransaction { get; set; }
+        public int? IdPreviousTransaction { get; set; }
         public string TransactionNumber { get; set; }
         public string AccountNumber { get; set; }
         public string DNI { get; set; }

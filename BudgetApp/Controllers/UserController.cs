@@ -3,6 +3,9 @@ using Budget.Application.Interfaces;
 using Budget.Domain.DTOS.Models;
 using Budget.Domain.DTOS.user;
 using Budget.Infrastructure.Common;
+using HashidsNet;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,30 +16,42 @@ namespace BudgetApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsAdminOrUser")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IHashids _hashids;
         private readonly IMapper mapper;
-        public UserController(IUserService userService)
+        public UserController(
+            IUserService userService,
+            IHashids hashids
+            )
         {
             _userService = userService;
+            _hashids = hashids;
             mapper = AutomapperSingleton.GetMapper();
         }
 
         [HttpGet("[action]")]
+        [HttpHead("[action]")]
+        [HttpOptions("[action]")]
         public async Task<IEnumerable<UserDto>> GetAll()
         {
             return await _userService.GetAllAsync();
         }
 
-        [HttpGet("[action]")]
-        public async Task<ActionResult> Get([FromRoute] int id)
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult> Get([FromRoute] string id)
         {
-            var userDto = await _userService.GetAsync(id);
+            var rawDecoded = _hashids.Decode(id);
+            if (rawDecoded.Length <= 0)
+                return NotFound();
+
+            var userDto = await _userService.GetAsync(rawDecoded[0]);
             return Ok(userDto);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<ActionResult> Register(UserCreateDTO userCreationDto) 
         {
             try

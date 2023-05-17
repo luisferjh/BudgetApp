@@ -1,6 +1,7 @@
 ﻿using Budget.Domain.Entities;
 using Budget.Domain.Interfaces;
 using Budget.Infrastructure.Data;
+using Budget.Infrastructure.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,18 +18,42 @@ namespace Budget.Infrastructure.Repositories
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ILogRepository _logRepository;
         private readonly ILoadFilesRepository _loadFileRepository;
+        private readonly IIncomeRepository _incomeRepository;
+        private readonly IWalletRepository _walletRepository;
+        private readonly IFinancialProductRepository _financialProductRepository;
+        private readonly IIncomeCategoryRepository _incomeCategoryRepository;
+        private readonly IOperationRepository _operationRepository;
+        private readonly IAccountEntryRepository _accountEntryRepository;
+        private readonly IMovementRepository _movementRepository;
+        private readonly ISettingRepository _settingRepository;
 
         public UnitOfWork(BudgetDbContext budgetDbContext,
             IUserRepository userRepository,
             IRefreshTokenRepository refreshTokenRepository,
             ILogRepository logRepository,
-            ILoadFilesRepository loadFilesRepository)
+            ILoadFilesRepository loadFilesRepository,
+            IIncomeRepository incomeRepository,
+            IWalletRepository walletRepository,
+            IFinancialProductRepository financialProductRepository,
+            IIncomeCategoryRepository incomeCategoryRepository,
+            IOperationRepository operationRepository,
+            IAccountEntryRepository accountEntryRepository,
+            IMovementRepository movementRepository,
+            ISettingRepository settingRepository)
         {
             _dbContexnt = budgetDbContext;
             _userRepository = userRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _logRepository = logRepository;
             _loadFileRepository = loadFilesRepository;
+            _incomeRepository = incomeRepository;
+            _walletRepository = walletRepository;
+            _financialProductRepository = financialProductRepository;
+            _incomeCategoryRepository = incomeCategoryRepository;
+            _operationRepository = operationRepository;
+            _accountEntryRepository = accountEntryRepository;
+            _movementRepository = movementRepository;
+            _settingRepository = settingRepository;
         }
 
         public IUserRepository UserRepository { get => _userRepository; }
@@ -37,6 +62,24 @@ namespace Budget.Infrastructure.Repositories
         public ILogRepository LogRepository { get => _logRepository; }
 
         public ILoadFilesRepository LoadFilesRepository { get => _loadFileRepository; }
+
+        public IIncomeRepository IncomeRepository { get => _incomeRepository; }
+
+        public IWalletRepository WalletRepository { get => _walletRepository; }
+        public IFinancialProductRepository FinancialProductRepository { get => _financialProductRepository; }
+
+        public IIncomeCategoryRepository IncomeCategoryRepository { get => _incomeCategoryRepository;  }
+        public IOperationRepository OperationRepository { get => _operationRepository; }
+        public IAccountEntryRepository AccountEntryRepository { get => _accountEntryRepository; }
+        public IMovementRepository MovementRepository { get => _movementRepository; }
+        public ISettingRepository SettingRepository { get => _settingRepository; }
+
+
+        //public IGenericRepository<T> GenericRepository<T>() where T : class
+        //{
+        //    return new ConcreteRepository<T>(_dbContexnt);
+        //}
+
 
         public async Task<int> SaveAsync()
         {
@@ -56,7 +99,8 @@ namespace Budget.Infrastructure.Repositories
                     Data = "",
                     DateLog = DateTime.Now,
                     Method = "LoginController",
-                    Trace = ex.Message
+                    MessageError = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
                 return -1;
             }
@@ -67,7 +111,8 @@ namespace Budget.Infrastructure.Repositories
                     Data = "",
                     DateLog = DateTime.Now,
                     Method = "LoginController",
-                    Trace = ex.Message
+                    MessageError = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
                 return -1;
             }
@@ -84,5 +129,7 @@ namespace Budget.Infrastructure.Repositories
             if (disposing)
                 _dbContexnt.Dispose();
         }
+
+     
     }
 }

@@ -13,7 +13,7 @@ namespace Budget.Domain.Entities
         public decimal Balance { get; set; }
         public string  DNI { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public FinancialProduct FinancialProduct { get; set; }
         public User User { get; set; }
         public Bank Bank { get; set; }

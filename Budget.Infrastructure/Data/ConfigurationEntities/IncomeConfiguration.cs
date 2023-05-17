@@ -1,6 +1,7 @@
 ﻿using Budget.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Budget.Infrastructure.Data.ConfigurationEntities
 {
@@ -52,11 +53,15 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
 
             builder.Property(x => x.CreatedDate)
              .HasColumnType("datetime")
-             .HasColumnName("created_date");
+             .HasColumnName("created_date")
+             .IsRequired()
+             .HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.UpdatedDate)
              .HasColumnType("datetime")
-             .HasColumnName("updated_date");
+             .HasColumnName("updated_date")
+             .IsRequired(false)
+             .HasDefaultValue(null);
 
             builder.HasOne(x => x.IncomeCategory)
              .WithMany(x => x.Incomes)

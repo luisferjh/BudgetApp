@@ -12,7 +12,10 @@ namespace Budget.Domain.Entities
         public string Key { get; set; }
         public string Method { get; set; }
         public string Data { get; set; }
-        public string Trace { get; set; }
+        public string MessageError { get; set; }
+        public string StackTrace { get; set; }
+        public string InnerException { get; set; }
+        public string Exception { get; set; }
         public Layers Layer { get; set; }
         public DateTime DateLog { get; set; }
     }

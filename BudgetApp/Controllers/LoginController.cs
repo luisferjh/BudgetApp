@@ -46,7 +46,8 @@ namespace BudgetApp.Controllers
                     Data = loginModel.ToString(),
                     DateLog = DateTime.Now,
                     Method = "LoginController",
-                    Trace = ex.Message,
+                    MessageError = ex.Message,
+                    StackTrace = ex.StackTrace,
                     Layer = Layers.Presentation
                 });
 

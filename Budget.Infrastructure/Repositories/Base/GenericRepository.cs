@@ -58,7 +58,10 @@ namespace Budget.Infrastructure.Repositories.Base
             _dbContext.Set<T>().Remove(model);
         }
 
-          
-       
+        public void Delete(int id)
+        {
+            T entity = Get(id);
+            _dbContext.Set<T>().Remove(entity);
+        }
     }
 }

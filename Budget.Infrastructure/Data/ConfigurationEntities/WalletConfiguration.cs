@@ -52,12 +52,13 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
             builder.Property(x => x.CreatedDate)
                 .HasColumnName("created_date")
                 .HasColumnType("datetime")
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.UpdatedDate)
                 .HasColumnName("updated_date")
                 .HasColumnType("datetime")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(x => x.User)
                 .WithMany(x => x.Wallets)

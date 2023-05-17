@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Budget.Infrastructure.Adapters.Automapper.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace Budget.Infrastructure.Common
             {
                 var configMapper = new MapperConfiguration(cfg => {
                     cfg.AddProfile<UserProfile>();
+                    cfg.AddProfile<IncomeProfile>();
+                    cfg.AddProfile<WalletProfile>();
+                    cfg.AddProfile<FinancialProductProfile>();
+                    cfg.AddProfile<IncomeCategoryProfile>();
+                    cfg.AddProfile<AccountEntryProfile>();
+                    cfg.AddProfile<OperationProfile>();
+                    cfg.AddProfile<MovementProfile>();
                 });
 
                 mapper = configMapper.CreateMapper();                

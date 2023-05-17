@@ -18,6 +18,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Budget.Infrastructure.Common.Configs;
 using Budget.Infrastructure.Adapters.Loads;
+using HashidsNet;
+using Microsoft.OpenApi.Models;
 
 namespace BudgetApp
 {
@@ -92,6 +94,24 @@ namespace BudgetApp
             services.AddTransient<IMapping, AutoMapperImplementation>();
             services.AddTransient<ILoadsService, LoadsService>();
             services.AddTransient<ILoadFilesRepository, LoadFileRepository>();
+            services.AddTransient<IIncomeService, IncomeService>();
+            services.AddTransient<IIncomeRepository, IncomeRepository>();
+            services.AddTransient<IIncomeCategoryService, IncomeCategoryService>();
+            services.AddTransient<IIncomeCategoryRepository, IncomeCategoryRepository>();
+            services.AddTransient<IWalletRepository, WalletRepository>();
+            services.AddTransient<IWalletService, WalletService>();
+            services.AddTransient<IFinancialProductService, FinancialProductService>();
+            services.AddTransient<IFinancialProductRepository, FinancialProductRepository>();
+            services.AddTransient<IOperationService, OperationService>();
+            services.AddTransient<IOperationRepository, OperationRepository>();
+            services.AddTransient<IAccountEntriesServices, AccountEntryService>();
+            services.AddTransient<IAccountEntryRepository, AccountEntryRepository>();
+            //services.AddTransient<IMovementService, MovementService>();
+            services.AddTransient<IMovementRepository, MovementRepository>();
+            services.AddTransient<ISettingService, SettingService>();
+            services.AddTransient<ISettingRepository, SettingRepository>();
+
+            services.AddSingleton<IHashids>(new Hashids("ujgsxeqqsd", 11));
 
             // initialize static service provider
             StaticServiceProvider.BuildProvider(services);
@@ -100,6 +120,39 @@ namespace BudgetApp
             {
                 options.AddPolicy("IsAdmin", policy => policy.RequireClaim("isAdmin"));
                 options.AddPolicy("IsUser", policy => policy.RequireClaim("isUser"));
+                // para validar cualquiera de los roles en el endpoint
+                options.AddPolicy("IsAdminOrUser", policy => policy.RequireClaim("isAdminUser","isAdmin","isUser"));
+                // para hacer autenticacion multiroles
+                //options.AddPolicy("IsAdminUser", policy => policy.RequireClaim("isUser").RequireClaim("isAdmin")); 
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BudgetApp", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference  = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[]{ }
+                    }
+                });
             });
         }
 

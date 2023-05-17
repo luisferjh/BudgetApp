@@ -12,7 +12,7 @@ namespace Budget.Domain.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task AddAsync(T model);
         void Update(T model);
-        void Delete(T model);
+        void Delete(int id);
 
 
         T Get(int id);

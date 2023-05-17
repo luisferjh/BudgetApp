@@ -1,0 +1,19 @@
+- Data: {"IdFinancialProd":2,"IdUser":5,"IdBank":3,"AccountNumber":"488420153261","Balance":3500000,"DNI":"1065659969"} 
+ - Exception: An error occurred while saving the entity changes. See the inner exception for details. 
+ - Trace: Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert the value NULL into column 'exception', table 'BudgetDB_V2.dbo.LogErrors'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__188_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.Tasks.Task.<>c.<.cctor>b__272_0(Object obj)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:018b4cdb-0335-4a01-85ba-25ef09bc88e2
+Error Number:515,State:2,Class:16 
+- Controller: InsertAsync 
+- Service: 

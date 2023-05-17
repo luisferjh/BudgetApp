@@ -46,7 +46,7 @@ namespace Budget.Infrastructure.Repositories
             try
             {
                 _dbContext.LogErrors.Add(logError);
-                _dbContext.SaveChanges();
+                //_dbContext.SaveChanges();
             }
             catch (DbUpdateException ex)
             {
@@ -60,7 +60,7 @@ namespace Budget.Infrastructure.Repositories
             try
             {
                 _dbContext.LogErrors.Add(logError);
-                await _dbContext.SaveChangesAsync();
+                //await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
