@@ -15,7 +15,7 @@ namespace Budget.Domain.Entities
 
         public List<SpentDetail> SpentDetails { get; set; }
         public State State { get; set; }
-        public List<CashFlowFixed> CashFlowFixeds { get; set; }
+        public List<FixedIncome> CashFlowFixeds { get; set; }
 
     }
 }

@@ -13,6 +13,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Spent> builder)
         {
+            builder.ToTable("Spents");
             builder.HasKey(w => w.Id);
 
             builder.Property(x => x.Id)
@@ -57,11 +58,15 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
 
             builder.Property(x => x.CreatedDate)
              .HasColumnType("datetime")
-             .HasColumnName("created_date");
+             .HasColumnName("created_date")
+             .IsRequired()
+             .HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.UpdatedDate)
              .HasColumnType("datetime")
-             .HasColumnName("updated_date");
+             .HasColumnName("updated_date")
+             .IsRequired(false)
+             .HasDefaultValue(null);
 
             builder.HasOne(x => x.SpentDetail)
              .WithMany(x => x.Spents)

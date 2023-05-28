@@ -15,6 +15,6 @@ namespace Budget.Domain.Entities
 
         public List<Income> Incomes { get; set; }
         public State State { get; set; }
-        public List<CashFlowFixed> CashFlowFixeds { get; set; }
+        public List<FixedIncome> FixedIncomes { get; set; }
     }
 }

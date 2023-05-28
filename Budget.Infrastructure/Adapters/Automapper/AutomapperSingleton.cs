@@ -29,6 +29,7 @@ namespace Budget.Infrastructure.Common
                     cfg.AddProfile<AccountEntryProfile>();
                     cfg.AddProfile<OperationProfile>();
                     cfg.AddProfile<MovementProfile>();
+                    cfg.AddProfile<SpentProfile>();
                 });
 
                 mapper = configMapper.CreateMapper();                

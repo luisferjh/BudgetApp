@@ -18,12 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\Extensions\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Settings\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Budget.Application\Budget.Application.csproj" />
   </ItemGroup>
 

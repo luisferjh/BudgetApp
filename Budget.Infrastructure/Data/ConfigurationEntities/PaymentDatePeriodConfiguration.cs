@@ -13,14 +13,16 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<PaymentDatePeriod> builder)
         {
+            builder.ToTable("PaymentDatePeriods");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
                 .HasColumnName("id")
                 .HasColumnType("int");
 
-            builder.Property(x => x.IdCashFlowFixed)
-               .HasColumnName("id_cash_flow_fixed")
+            builder.Property(x => x.IdPeriodicity)
+               .HasColumnName("id_periodicity")
                .HasColumnType("int");
 
             builder.Property(x => x.InitDate)
@@ -35,6 +37,14 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                .HasColumnName("payment_date")
                .HasColumnType("nvarchar(20)");
 
+            builder.Property(x => x.UnitDate)
+              .HasColumnName("unit_date")
+              .HasColumnType("nvarchar(20)");
+
+            builder.Property(x => x.Year)
+              .HasColumnName("year")
+              .HasColumnType("int");
+
             builder.Property(x => x.IdState)
                .HasColumnName("id_state")
                .HasColumnType("int");
@@ -44,9 +54,9 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                 .HasForeignKey("IdState")
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.CashFlowFixed)
-                .WithMany(x => x.PaymentDatePeriods)
-                .HasForeignKey(x => x.IdCashFlowFixed)
+            builder.HasOne(x => x.Periodicity)
+                .WithOne(x => x.PaymentDatePeriod)
+                .HasForeignKey<PaymentDatePeriod>(x => x.IdPeriodicity)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

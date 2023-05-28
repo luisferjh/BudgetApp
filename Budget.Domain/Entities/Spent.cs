@@ -17,13 +17,12 @@ namespace Budget.Domain.Entities
         public int Year { get; set; }
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public SpentDetail SpentDetail { get; set; }
         public User User { get; set; }
         public FinancialProduct FinancialProduct { get; set; }
         public State State { get; set; }
         public Operation Operation { get; set; }
-        public TransactionFixed TransactionFixed { get; set; }
     }
 }

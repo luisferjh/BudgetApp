@@ -58,7 +58,7 @@ namespace Budget.Infrastructure.Repositories
         {
             return await _budgetDbContext.Movements
                 .OrderByDescending(od => od.CreatedDate)
-                .LastOrDefaultAsync(f => f.AccountNumber == accountNumber);
+                .FirstOrDefaultAsync(f => f.AccountNumber == accountNumber);
         }
 
         public void Update(Movement model)

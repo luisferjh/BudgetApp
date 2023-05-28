@@ -16,6 +16,6 @@ namespace Budget.Domain.Entities
         public SpentCategory SpentCategory { get; set; }
         public List<Spent> Spents { get; set; }
         public State State { get; set; }
-        public List<CashFlowFixed> CashFlowFixeds { get; set; }
+        public List<FixedIncome> CashFlowFixeds { get; set; }
     }
 }

@@ -9,6 +9,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Income> builder)
         {
+            builder.ToTable("Incomes");
+
             builder.HasKey(w => w.Id);
 
             builder.Property(x => x.Id)

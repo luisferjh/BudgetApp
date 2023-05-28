@@ -15,6 +15,7 @@ namespace Budget.Application.Interfaces
         Task<IEnumerable<WalletDTO>> GetFinanceProductUser(string DocUser);
         Task<ResponseServiceDTO> InsertAsync(CreateWalletDTO createWalletDTO);
         void Update(Wallet wallet);
-        Task UpdateBalance(int id, decimal valueToAdd);
+        Task UpdateAddBalance(int id, decimal valueToAdd);
+        Task UpdateSubstractBalance(int id, decimal valueToAdd);
     }
 }

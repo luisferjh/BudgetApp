@@ -11,6 +11,6 @@ namespace Budget.Domain.Interfaces
     {
         Task<Setting> GetAsync(int id);
         Task<Setting> GetAsync(string serie);
-        void UpdateSetting(Setting setting);
+        void UpdateSetting(Setting setting);        
     }
 }

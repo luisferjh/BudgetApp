@@ -12,5 +12,7 @@ namespace Budget.Domain.Interfaces
         Task AddAsync(Income model);
 
         void Add(Income model);
+
+        Task<IEnumerable<Income>> GetIncomesByUser(int idUser, int year, int idIncomeCategory);
     }
 }

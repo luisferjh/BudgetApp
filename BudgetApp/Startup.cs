@@ -20,6 +20,8 @@ using Budget.Infrastructure.Common.Configs;
 using Budget.Infrastructure.Adapters.Loads;
 using HashidsNet;
 using Microsoft.OpenApi.Models;
+using Budget.Application.Helpers;
+using Budget.Infrastructure.Helpers.Extensions;
 
 namespace BudgetApp
 {
@@ -81,37 +83,11 @@ namespace BudgetApp
             });
 
             //services.AddAutoMapper(typeof(Startup));
-
-            services.AddTransient<IUserRepository, UserRepository>();          
-            services.AddTransient<ILogRepository, LogRepository>();          
-            services.AddTransient<ILoginService, LoginService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ILogService, LogService>();
-            services.AddTransient<IUnitOfWork,UnitOfWork>();
-            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();          
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<SecurityTools>();
-            services.AddTransient<IMapping, AutoMapperImplementation>();
-            services.AddTransient<ILoadsService, LoadsService>();
-            services.AddTransient<ILoadFilesRepository, LoadFileRepository>();
-            services.AddTransient<IIncomeService, IncomeService>();
-            services.AddTransient<IIncomeRepository, IncomeRepository>();
-            services.AddTransient<IIncomeCategoryService, IncomeCategoryService>();
-            services.AddTransient<IIncomeCategoryRepository, IncomeCategoryRepository>();
-            services.AddTransient<IWalletRepository, WalletRepository>();
-            services.AddTransient<IWalletService, WalletService>();
-            services.AddTransient<IFinancialProductService, FinancialProductService>();
-            services.AddTransient<IFinancialProductRepository, FinancialProductRepository>();
-            services.AddTransient<IOperationService, OperationService>();
-            services.AddTransient<IOperationRepository, OperationRepository>();
-            services.AddTransient<IAccountEntriesServices, AccountEntryService>();
-            services.AddTransient<IAccountEntryRepository, AccountEntryRepository>();
-            //services.AddTransient<IMovementService, MovementService>();
-            services.AddTransient<IMovementRepository, MovementRepository>();
-            services.AddTransient<ISettingService, SettingService>();
-            services.AddTransient<ISettingRepository, SettingRepository>();
-
+            services.AddApplicationServices();
+            services.AddInfrastructureServices();
+          
             services.AddSingleton<IHashids>(new Hashids("ujgsxeqqsd", 11));
+            services.AddHttpContextAccessor();
 
             // initialize static service provider
             StaticServiceProvider.BuildProvider(services);

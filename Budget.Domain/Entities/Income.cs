@@ -24,8 +24,7 @@ namespace Budget.Domain.Entities
         public User User { get; set; }
         public FinancialProduct FinancialProduct { get; set; }
         public State State { get; set; }
-        public Operation Operation { get; set; }
-        public TransactionFixed TransactionFixed { get; set; }
+        public Operation Operation { get; set; }        
 
     }
 }

@@ -14,6 +14,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<State> builder)
         {
+            builder.ToTable("States");
             builder.HasKey(e => e.IdState);
 
             builder.Property(s => s.IdState)

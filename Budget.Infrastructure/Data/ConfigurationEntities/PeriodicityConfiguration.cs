@@ -13,6 +13,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Periodicity> builder)
         {
+            builder.ToTable("Periodicities");
+
             builder.HasKey(s => s.Id);
 
             builder.Property(x => x.Id)
@@ -24,14 +26,14 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
               .HasColumnType("nvarchar(20)")
               .IsRequired();
 
-            builder.Property(x => x.AmountPay)
-              .HasColumnName("amount_pay")
+            builder.Property(x => x.AmountPayMonth)
+              .HasColumnName("amount_pay_month")
               .HasColumnType("tinyint")
               .IsRequired();
 
             builder.Property(x => x.AmountPayYear)
              .HasColumnName("amount_pay_year")
-             .HasColumnType("tinyint")
+             .HasColumnType("int")
              .IsRequired();
 
             builder.Property(x => x.MonthUnit)
@@ -41,13 +43,14 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
 
             builder.Property(x => x.DayUnit)
              .HasColumnName("day_unit")
-             .HasColumnType("tinyint")
+             .HasColumnType("int")
              .IsRequired();
 
             builder.Property(x => x.IsFixedInterval)
                .HasColumnName("is_fixed_intervar")
                .HasColumnType("bit")
-               .IsRequired();
+               .IsRequired(false)
+               .HasDefaultValue(null);
 
             builder.Property(x => x.IdState)
                .HasColumnName("id_state")
@@ -56,7 +59,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
 
             builder.HasOne(x => x.State)
             .WithMany()
-            .HasForeignKey("IdState")
+            .HasForeignKey("id_state")
             .OnDelete(DeleteBehavior.NoAction);
 
             // this can be usefull for properties who relation in each other

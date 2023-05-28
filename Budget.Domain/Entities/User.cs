@@ -21,6 +21,6 @@ namespace Budget.Domain.Entities
         public List<Wallet> Wallets { get; set; }
         public List<Income> Incomes { get; set; }
         public List<Spent> Spents { get; set; }
-        public List<CashFlowFixed> CashFlowFixeds { get; set; }
+        public List<FixedIncome> FixedIncomes { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<IncomeCategory> builder)
         {
+            builder.ToTable("IncomeCategories");
+
             builder.HasKey(w => w.Id);
 
             builder.Property(x => x.Id)

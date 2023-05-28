@@ -9,6 +9,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Movement> builder)
         {
+            builder.ToTable("Movements");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)

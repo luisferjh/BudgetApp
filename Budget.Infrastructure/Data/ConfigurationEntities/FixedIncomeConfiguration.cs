@@ -6,10 +6,12 @@ using System;
 
 namespace Budget.Infrastructure.Data.ConfigurationEntities
 {
-    public class CashFlowFixedConfiguration : IEntityTypeConfiguration<CashFlowFixed>
+    public class FixedIncomeConfiguration : IEntityTypeConfiguration<FixedIncome>
     {
-        public void Configure(EntityTypeBuilder<CashFlowFixed> builder)
+        public void Configure(EntityTypeBuilder<FixedIncome> builder)
         {
+            builder.ToTable("FixedIncomes");
+
             builder.HasKey(s => s.Id);
 
             builder.Property(x => x.Id)
@@ -21,8 +23,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                .HasColumnType("int")
                .IsRequired();
 
-            builder.Property(x => x.IdCategory)
-              .HasColumnName("id_category")
+            builder.Property(x => x.IdIncomeCategory)
+              .HasColumnName("id_income_category")
               .HasColumnType("int")
               .IsRequired();
 
@@ -31,15 +33,16 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
               .HasColumnType("int")
               .IsRequired();
 
-            builder.Property(x => x.Idperiodicity)
-              .HasColumnName("id_periodicity")
+            builder.Property(x => x.IdPaymentDatePeriod)
+              .HasColumnName("id_payment_date_period")
               .HasColumnType("int")
               .IsRequired();
 
-            builder.Property(x => x.Year)
-              .HasColumnName("year")
-              .HasColumnType("int")
-              .IsRequired();
+            builder.Property(x => x.IdWallet)
+             .HasColumnName("id_wallet")
+             .HasColumnType("int")
+             .IsRequired()
+             .HasDefaultValue(null);
 
             builder.Property(x => x.Amount)
               .HasColumnName("amount")
@@ -49,7 +52,14 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
             builder.Property(x => x.CreatedDate)
               .HasColumnName("created_date")
               .HasColumnType("datetime")
-              .IsRequired();
+              .IsRequired()
+              .HasDefaultValue(DateTime.Now);
+
+            builder.Property(x => x.UpdatedDate)
+             .HasColumnName("updated_date")
+             .HasColumnType("datetime")
+             .IsRequired(false)
+             .HasDefaultValue(null);
 
             builder.Property(x => x.IdState)
               .HasColumnName("id_state")
@@ -61,13 +71,13 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                 .HasForeignKey("IdState")
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.Periodicity)
-                .WithMany(x => x.CashFlowFixeds)
-                .HasForeignKey(x => x.Idperiodicity)
+            builder.HasOne(x => x.PaymentDatePeriod)
+                .WithOne(x => x.FixedIncome)
+                .HasForeignKey<FixedIncome>(x => x.IdPaymentDatePeriod)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.User)
-                .WithMany(x => x.CashFlowFixeds)
+                .WithMany(x => x.FixedIncomes)
                 .HasForeignKey(x => x.IdUser)
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -76,20 +86,21 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                 .HasForeignKey("IdOperation")
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasOne(x => x.IncomeCategory)
+                .WithMany(x => x.FixedIncomes)
+                .HasForeignKey(x => x.IdIncomeCategory)
+                .OnDelete(DeleteBehavior.NoAction);
+
             //builder.HasOne(typeof(Operation))
             //    .WithMany()
             //    .HasForeignKey("IdOperation")
             //    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.IncomeCategory)
-                .WithMany(x => x.CashFlowFixeds)
-                .HasForeignKey(x => x.IdCategory)
-                .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.SpentDetail)
-                .WithMany(x => x.CashFlowFixeds)
-                .HasForeignKey(x => x.IdCategory)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(x => x.SpentDetail)
+            //    .WithMany(x => x.CashFlowFixeds)
+            //    .HasForeignKey(x => x.IdCategory)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
             //builder.HasOne(x => x.CategoryID)
             //    .WithMany()

@@ -10,6 +10,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<UserClaims> builder)
         {
+            builder.ToTable("UserClaims");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)

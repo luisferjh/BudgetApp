@@ -21,6 +21,8 @@ namespace Budget.Domain.Interfaces
         IAccountEntryRepository AccountEntryRepository { get; }
         IMovementRepository MovementRepository { get; }
         ISettingRepository SettingRepository { get; }
+        ISpentRepository SpentRepository { get; }
+        IFixedIncomeRepository FixedIncomeRepository { get; }
         //IGenericRepository<T> GenericRepository<T>() where T : class;
 
 

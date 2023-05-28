@@ -14,6 +14,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<LogError> builder)
         {
+            builder.ToTable("LogErrors");
+
             builder.HasKey(e => e.Id);
 
             builder.Property(x => x.Id)

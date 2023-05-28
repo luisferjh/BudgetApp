@@ -13,6 +13,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Bank> builder)
         {
+            builder.ToTable("Banks");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)

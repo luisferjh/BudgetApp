@@ -119,10 +119,17 @@ namespace Budget.Application.Services
             _unitOfWork.WalletRepository.Update(wallet);
         }
 
-        public async Task UpdateBalance(int id, decimal valueToAdd)
+        public async Task UpdateAddBalance(int id, decimal valueToAdd)
         {
             var wallet = await _unitOfWork.WalletRepository.GetFinanceProductUserAsync(id);
-            wallet.Balance += wallet.Balance + valueToAdd;
+            wallet.Balance += valueToAdd;
+            Update(wallet);
+        }
+
+        public async Task UpdateSubstractBalance(int id, decimal valueToAdd)
+        {
+            var wallet = await _unitOfWork.WalletRepository.GetFinanceProductUserAsync(id);
+            wallet.Balance -= valueToAdd;
             Update(wallet);
         }
     }

@@ -13,6 +13,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
     {
         public void Configure(EntityTypeBuilder<Setting> builder)
         {
+            builder.ToTable("Settings");
+
             builder.HasKey(w => w.Id);
 
             builder.Property(x => x.Id)

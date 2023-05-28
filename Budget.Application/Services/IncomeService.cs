@@ -7,6 +7,7 @@ using Budget.Infrastructure.Common;
 using Budget.Infrastructure.DTOS.Incomes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -41,9 +42,11 @@ namespace Budget.Application.Services
             {
                 Income income = _mapping.Map<Income, CreateIncomeDTO>(createIncomeDTO);
                 income.TransactionNumber = await _settingService.GetNextConsecutive(OperationEnum.Income);
+                income.IdState = (int)StatesEnum.ACTIVE;
+                income.IdOperation = (int)OperationsEnum.INCOME;
                 await _unitOfWork.IncomeRepository.AddAsync(income);
 
-                await _walletService.UpdateBalance(income.IdFinancialProduct, income.Amount);
+                await _walletService.UpdateAddBalance(income.IdFinancialProduct, income.Amount);
 
                 Operation operation = await _unitOfWork.OperationRepository.GetAsync("INCOME");
                 Wallet wallet = await _unitOfWork.WalletRepository.GetFinanceProductUserAsync(income.IdFinancialProduct);
@@ -99,6 +102,13 @@ namespace Budget.Application.Services
             }
 
             return responseDTO;
+        }
+
+        public async Task<IEnumerable<IncomeDTO>> GetIncomesByUser(int idUser, int year, int idIncomeCategory)
+        {
+            IEnumerable<Income> incomes = await _unitOfWork.IncomeRepository.GetIncomesByUser(idUser, year, idIncomeCategory);           
+            IEnumerable<IncomeDTO> incomesDtos = _mapping.Map<IEnumerable<IncomeDTO>, IEnumerable<Income>>(incomes);
+            return incomesDtos;
         }
     }
 }
