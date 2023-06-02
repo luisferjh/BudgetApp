@@ -61,6 +61,8 @@ namespace Budget.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new FixedIncomeConfiguration());                                                         
             modelBuilder.ApplyConfiguration(new PaymentDatePeriodConfiguration());                                                                                                              
             modelBuilder.ApplyConfiguration(new SettingConfiguration());
+
+            //base.OnModelCreating(modelBuilder);
            
         }
 

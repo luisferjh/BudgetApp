@@ -92,7 +92,34 @@ namespace Budget.Infrastructure.Repositories
 
         public async Task<int> SaveAsync()
         {
-            return await _dbContexnt.SaveChangesAsync();
+            try
+            {
+                return await _dbContexnt.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logRepository.SaveLog(new LogError
+                {
+                    Data = "",
+                    DateLog = DateTime.Now,
+                    Method = "SaveAsync",
+                    MessageError = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                _logRepository.SaveLog(new LogError
+                {
+                    Data = "",
+                    DateLog = DateTime.Now,
+                    Method = "SaveAsync",
+                    MessageError = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+                return -1;
+            }
         }
 
         public int Save() 

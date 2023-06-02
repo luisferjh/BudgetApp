@@ -21,11 +21,13 @@ namespace Budget.Application.Services
         public async Task SaveLog(LogError log)
         {
             await _unitOfWork.LogRepository.SaveLogAsync(log);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task SaveLogFile(string data, Exception ex, string controller = "", string service = "")
         {
             await _unitOfWork.LogRepository.SaveFileLogAsync(data, ex, controller, service);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

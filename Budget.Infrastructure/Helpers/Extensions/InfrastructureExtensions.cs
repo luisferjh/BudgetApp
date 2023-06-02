@@ -28,7 +28,7 @@ namespace Budget.Infrastructure.Helpers.Extensions
             services.AddTransient<IAccountEntryRepository, AccountEntryRepository>();
             services.AddTransient<IMovementRepository, MovementRepository>();
             services.AddTransient<ISettingRepository, SettingRepository>();
-            services.AddTransient<ISpentRepository, SpentRepository>();
+            services.AddTransient<ISpentRepository, SpentRepository>();         
         }
     }
 }

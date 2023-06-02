@@ -55,6 +55,8 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
             .HasColumnName("created_date")
             .IsRequired();
 
+            builder.HasQueryFilter(x => x.State == 1);
+
            
         }
     }

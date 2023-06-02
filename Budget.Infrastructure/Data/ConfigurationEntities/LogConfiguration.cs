@@ -59,7 +59,7 @@ namespace Budget.Infrastructure.Data.ConfigurationEntities
                 .HasDefaultValue(DateTime.Now);
 
             builder.Property(x => x.Key)
-                .HasColumnType("nvarchar(30)")
+                .HasColumnType("nvarchar(50)")
                 .HasColumnName("key")
                   .IsRequired(false);
 

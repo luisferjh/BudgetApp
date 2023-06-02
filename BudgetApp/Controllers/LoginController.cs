@@ -28,6 +28,7 @@ namespace BudgetApp.Controllers
         {
          
             AuthenticationResultDTO result = null;
+            throw new Exception("exception provocada");
             try
             {
                 if (!ModelState.IsValid)

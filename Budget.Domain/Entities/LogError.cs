@@ -25,6 +25,7 @@ namespace Budget.Domain.Entities
         Domain,
         Application,
         Infrastructure,
-        Presentation
+        Presentation,
+        Global
     }
 }

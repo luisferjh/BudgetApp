@@ -22,6 +22,12 @@ using HashidsNet;
 using Microsoft.OpenApi.Models;
 using Budget.Application.Helpers;
 using Budget.Infrastructure.Helpers.Extensions;
+using BudgetApp.Helpers.Extensions;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using System;
+using Budget.Domain.Entities;
+using BudgetApp.Helpers;
 
 namespace BudgetApp
 {
@@ -32,10 +38,10 @@ namespace BudgetApp
             Configuration = configuration;            
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }      
 
         public void ConfigureServices(IServiceCollection services) 
-        {
+        {            
             // Add services to the container.
             services.AddControllers();
             
@@ -90,7 +96,6 @@ namespace BudgetApp
             services.AddHttpContextAccessor();
 
             // initialize static service provider
-            StaticServiceProvider.BuildProvider(services);
 
             services.AddAuthorization(options =>
             {
@@ -130,9 +135,13 @@ namespace BudgetApp
                     }
                 });
             });
+
+            StaticServiceProvider.BuildProvider(services);
+            //StaticServiceProvider.GenerarProveedor(services);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogService logService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
         {
             // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
@@ -140,6 +149,40 @@ namespace BudgetApp
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+           
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "application/json";
+                   
+
+                    var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if (exceptionHandlerFeature != null)
+                    {                        
+                      
+                       //var logService = services.GetService<ILogService>(); 
+                       var logService = StaticServiceProvider.GetService<ILogService>();
+                       
+
+                        await logService.SaveLog(new LogError
+                        {
+                            Exception = exceptionHandlerFeature.Error.ToString(),
+                            DateLog = DateTime.Now,
+                            Layer = Layers.Global,
+                            InnerException = exceptionHandlerFeature.Error?.InnerException?.ToString(),
+                            StackTrace = exceptionHandlerFeature.Error?.StackTrace.ToString(),
+                            MessageError = exceptionHandlerFeature.Error.Message,
+                            Key = $"host: {context.Request.Headers.Host.ToString()} HttpMethod: {context.Request.Method}",
+                            Method = "Configure"
+
+                        });
+                        
+                        await context.Response.WriteAsync($"{{ \"error\": \"{exceptionHandlerFeature.Error.Message}\" }}");
+                    }
+                });
+            });
 
             app.UseHttpsRedirection();
 

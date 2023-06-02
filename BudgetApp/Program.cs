@@ -1,3 +1,4 @@
+using Budget.Application.Interfaces;
 using BudgetApp;
 using Microsoft.AspNetCore.Builder;
 
@@ -9,6 +10,8 @@ startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-startup.Configure(app, app.Environment);
+//var serviceLogger = (ILogService)app.Services.GetService(typeof(ILogService));
+//startup.Configure(app, app.Environment, serviceLogger);
+startup.Configure(app, app.Environment, app.Services);
 
 app.Run();
